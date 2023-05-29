@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "39563173956",
+    "project_id": "movies-antia-flutter",
+    "storage_bucket": "movies-antia-flutter.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:39563173956:android:469528cd840abb0e251c11",
+        "android_client_info": {
+          "package_name": "com.example.movies"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCaGY2BGs4D7pxdrDF0ruu104YtkFM0O30"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
