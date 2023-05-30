@@ -27,57 +27,79 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
           },
         ),
       ),
-      body: Center(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(62.0),
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset(
-                    'assets/vecteezy_cinema-background-concept-movie-theater-object-on-red_5502524.jpg',
-                    width: 250.0, // Ancho de la imagen
-                    height: 200.0, // Alto de la imagen
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset(
+            'assets/vecteezy_cinema-background-concept-movie-theater-object-on-red_5502524.jpg',
+            width: double.infinity,
+            fit: BoxFit.cover,
+          ),
+          Expanded(
+            child: Center(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(62.0),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          "We've sent you an email verification.",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(
+                          height: 20.0,
+                        ),
+                        const Text(
+                          "If you haven't received a verification email yet, press the button below.",
+                          style: TextStyle(color: Colors.white),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(
+                          height: 52.0,
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            context.read<AuthBloc>().add(
+                                  const AuthEventSendEmailVerification(),
+                                );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.red,
+                            minimumSize: const Size(double.infinity, 0),
+                            padding: const EdgeInsets.all(15.0),
+                          ),
+                          child: const Text(
+                            'Send email verification',
+                            style: TextStyle(color: Colors.white, fontSize: 18),
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            context.read<AuthBloc>().add(
+                                  const AuthEventLogOut(),
+                                );
+                          },
+                          child: const Text(
+                            'Restart',
+                            style: TextStyle(
+                              color: Colors.grey,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
-                  const Text(
-                      "We've sent you an email verification. Please open it to verify account."),
-                  const Text(
-                      "If you haven't received a verification email yet, press the button below."),
-                  ElevatedButton(
-                    onPressed: () {
-                      context.read<AuthBloc>().add(
-                            const AuthEventSendEmailVerification(),
-                          );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red,
-                      minimumSize: const Size(double.infinity, 0),
-                      padding: const EdgeInsets.all(15.0),
-                    ),
-                    child: const Text(
-                      'Send email verification',
-                      style: TextStyle(color: Colors.white, fontSize: 18),
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      context.read<AuthBloc>().add(
-                            const AuthEventLogOut(),
-                          );
-                    },
-                    child: const Text(
-                      'Restart',
-                      style: TextStyle(
-                        color: Colors.grey,
-                      ),
-                    ),
-                  )
-                ],
+                ),
               ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }

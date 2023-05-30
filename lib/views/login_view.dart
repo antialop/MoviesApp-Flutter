@@ -64,7 +64,7 @@ class _LoginViewState extends State<LoginView> {
               child: Center(
                 child: SingleChildScrollView(
                   child: Padding(
-                      padding: const EdgeInsets.all(62.0),
+                      padding: const EdgeInsets.all(54.0),
                       child: SingleChildScrollView(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,

@@ -56,85 +56,91 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
             },
           ),
         ),
-        body: Center(
-          child: SingleChildScrollView(
-          
-            child: Padding(
-              padding: const EdgeInsets.all(62.0),
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      'assets/vecteezy_cinema-background-concept-movie-theater-object-on-red_5502524.jpg',
-                      width: double.infinity,
-                      fit: BoxFit.cover,
-                    ),
-                    const SizedBox(height: 20.0),  
-                    TextField(
-                      keyboardType: TextInputType.emailAddress,
-                      autocorrect: false,
-                      controller: _controller,
-                      style: const TextStyle(color: Colors.white),
-                      cursorColor: Colors.white,
-                      decoration: const InputDecoration(
-                        prefixIcon: Icon(
-                          Icons.email,
-                          color: Colors.white,
-                        ),
-                        hintText: 'Your email address...',
-                        hintStyle: TextStyle(color: Colors.white),
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                              color: Colors.white), // Color de la línea blanca
-                        ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white),
-                        ),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              'assets/vecteezy_cinema-background-concept-movie-theater-object-on-red_5502524.jpg',
+              width: double.infinity, 
+              fit: BoxFit.cover, 
+            ),
+            Expanded(
+              child: Center(
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.all(54.0),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          TextField(
+                            keyboardType: TextInputType.emailAddress,
+                            autocorrect: false,
+                            controller: _controller,
+                            style: const TextStyle(color: Colors.white),
+                            cursorColor: Colors.white,
+                            decoration: const InputDecoration(
+                              prefixIcon: Icon(
+                                Icons.email,
+                                color: Colors.white,
+                              ),
+                              hintText: 'Your email address...',
+                              hintStyle: TextStyle(color: Colors.white),
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Colors
+                                        .white),
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 52.0,
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              final email = _controller.text;
+                              context
+                                  .read<AuthBloc>()
+                                  .add(AuthEventForgotPassword(email: email));
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.red,
+                              minimumSize: const Size(double.infinity, 0),
+                              padding: const EdgeInsets.all(15.0),
+                            ),
+                            child: const Text(
+                              'Send me password reset link',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 18),
+                            ),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              context.read<AuthBloc>().add(
+                                    const AuthEventLogOut(),
+                                  );
+                            },
+                            style: TextButton.styleFrom(
+                              padding: const EdgeInsets.all(8.0),
+                              backgroundColor: Colors.transparent, // Sin fondo
+                            ),
+                            child: const Text(
+                              'Back to login page!',
+                              style: TextStyle(
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    const SizedBox(
-                      height: 32.0,
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        final email = _controller.text;
-                        context
-                            .read<AuthBloc>()
-                            .add(AuthEventForgotPassword(email: email));
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.red,
-                        minimumSize: const Size(double.infinity, 0),
-                        padding: const EdgeInsets.all(15.0),
-                      ),
-                      child: const Text(
-                        'Send me password reset link',
-                        style: TextStyle(color: Colors.white, fontSize: 18),
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        context.read<AuthBloc>().add(
-                              const AuthEventLogOut(),
-                            );
-                      },
-                      style: TextButton.styleFrom(
-                        padding: const EdgeInsets.all(8.0),
-                        backgroundColor: Colors.transparent, // Sin fondo
-                      ),
-                      child: const Text(
-                        'Back to login page!',
-                        style: TextStyle(
-                          color: Colors.grey,
-                        ),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               ),
             ),
-          ),
+          ],
         ),
       ),
     );
