@@ -52,6 +52,12 @@ class _RegisterViewState extends State<RegisterView> {
         appBar: AppBar(
           backgroundColor: Colors.red,
           title: const Text('Register'),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              context.read<AuthBloc>().add(const AuthEventLogOut());
+            },
+          ),
         ),
         body: Center(
           child: SingleChildScrollView(
@@ -63,10 +69,10 @@ class _RegisterViewState extends State<RegisterView> {
                   children: [
                     Image.asset(
                       'assets/vecteezy_cinema-background-concept-movie-theater-object-on-red_5502524.jpg',
-                      width: double.infinity, 
-                      fit: BoxFit.cover, 
+                      width: double.infinity,
+                      fit: BoxFit.cover,
                     ),
-                    const SizedBox(height: 20.0),   
+                    const SizedBox(height: 20.0),
                     TextField(
                       controller: _email,
                       enableSuggestions: false,

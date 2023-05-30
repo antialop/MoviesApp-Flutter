@@ -18,6 +18,14 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
       appBar: AppBar(
         backgroundColor: Colors.red,
         title: const Text('Verify email'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            context.read<AuthBloc>().add(
+                  const AuthEventLogOut(),
+                );
+          },
+        ),
       ),
       body: Center(
         child: SingleChildScrollView(

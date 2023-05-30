@@ -49,6 +49,12 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
         appBar: AppBar(
           backgroundColor: Colors.red,
           title: const Text('Forgot password'),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              context.read<AuthBloc>().add(const AuthEventLogOut());
+            },
+          ),
         ),
         body: Center(
           child: SingleChildScrollView(
