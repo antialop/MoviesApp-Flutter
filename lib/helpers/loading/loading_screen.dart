@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:movies/helpers/loading/loading_screen_controller.dart';
 
-
 class LoadingScreen {
   factory LoadingScreen() => _shared;
   static final LoadingScreen _shared = LoadingScreen._sharedInstance();
@@ -52,7 +51,7 @@ class LoadingScreen {
                   minWidth: size.width * 0.5,
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Colors.black,
                   borderRadius: BorderRadius.circular(10.0),
                 ),
                 child: Padding(
@@ -63,7 +62,10 @@ class LoadingScreen {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const SizedBox(height: 10),
-                        const CircularProgressIndicator(),
+                        const CircularProgressIndicator(
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Colors.white),
+                        ),
                         const SizedBox(height: 20),
                         StreamBuilder(
                           stream: _text.stream,
@@ -72,6 +74,10 @@ class LoadingScreen {
                               return Text(
                                 snapshot.data as String,
                                 textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                  color: Colors
+                                      .white, 
+                                ),
                               );
                             } else {
                               return Container();
@@ -101,6 +107,4 @@ class LoadingScreen {
       },
     );
   }
-
-
 }
