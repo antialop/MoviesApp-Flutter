@@ -1,0 +1,1 @@
+const movieRoute = '/movies/';
