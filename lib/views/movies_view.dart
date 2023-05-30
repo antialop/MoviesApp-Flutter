@@ -20,14 +20,18 @@ class _MoviesViewState extends State<MoviesView> {
     const HomeView(),
     const SearchView(),
     const WatchlistView()
-
   ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 18, 18, 18),
+      backgroundColor: const Color.fromARGB(255, 18, 18, 18),
       appBar: AppBar(
         backgroundColor: Colors.red,
+        leading: Image.asset(
+          'assets/icon_popcorn.png',
+          width: 1, 
+          height: 18,
+        ),
         title: const Text('Movies'),
         actions: [
           IconButton(
