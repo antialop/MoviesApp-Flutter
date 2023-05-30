@@ -29,8 +29,6 @@ class _MoviesViewState extends State<MoviesView> {
         backgroundColor: Colors.red,
         leading: Image.asset(
           'assets/icon_popcorn.png',
-          width: 1, 
-          height: 18,
         ),
         title: const Text('Movies'),
         actions: [
