@@ -1,10 +1,16 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:movies/firebase_options.dart';
 import 'package:movies/service/auth/auth_user.dart';
 import 'package:movies/service/auth/auth_provider.dart';
 import 'package:movies/service/auth/auth_exceptions.dart';
 import 'package:firebase_auth/firebase_auth.dart'
-    show FirebaseAuth, FirebaseAuthException;
+    show
+        AuthCredential,
+        FirebaseAuth,
+        FirebaseAuthException,
+        GoogleAuthProvider,
+        UserCredential;
 
 class FirebaseAuthProvider implements AuthProvider {
   @override
@@ -119,6 +125,28 @@ class FirebaseAuthProvider implements AuthProvider {
           throw GenericAuthException();
       }
     } catch (_) {
+      throw GenericAuthException();
+    }
+  }
+
+  @override
+  Future<AuthUser> signInWithGoogle() async {
+    try {
+      await GoogleSignIn().signOut();
+      GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
+      AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth?.accessToken,
+        idToken: googleAuth?.idToken,
+      );
+      await FirebaseAuth.instance.signInWithCredential(credential);
+      final user = currentUser;
+      if (user != null) {
+        return user;
+      } else {
+        throw UserNotLoggedInAuthException();
+      }
+    } catch (e) {
       throw GenericAuthException();
     }
   }

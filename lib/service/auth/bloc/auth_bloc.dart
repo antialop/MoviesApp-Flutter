@@ -166,5 +166,22 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         }
       },
     );
+  
+  
+   on<AuthEventSignInWithGoogle>((event, emit) async {
+      emit(const AuthStateLoggedOut(
+        exception: null,
+        isLoading: true,
+        loadingText: 'Please wait while i log you in',
+      ));
+      try {
+        final user = await provider.signInWithGoogle();
+        emit(const AuthStateLoggedOut(exception: null, isLoading: false));
+        emit(AuthStateLoggedIn(user: user, isLoading: false));
+        // }
+      } on Exception catch (e) {
+        emit(AuthStateLoggedOut(exception: e, isLoading: false));
+      }
+    });
   }
 }

@@ -44,3 +44,8 @@ class AuthEventForgotPassword extends AuthEvent {
 class AuthEventLogOut extends AuthEvent {
   const AuthEventLogOut();
 }
+
+//Evento -> Iniciar sesión con Google
+class AuthEventSignInWithGoogle extends AuthEvent {
+  const AuthEventSignInWithGoogle();
+}

@@ -129,14 +129,14 @@ class _LoginViewState extends State<LoginView> {
                                     Colors.transparent, // Sin fondo
                               ),
                               child: const Text(
-                                'Forgot Password?',
+                                'Forgot Password',
                                 style: TextStyle(
                                   color: Colors.grey,
                                 ),
                               ),
                             ),
                             const SizedBox(
-                              height: 32.0,
+                              height: 16.0,
                             ),
                             ElevatedButton(
                               onPressed: () async {
@@ -155,9 +155,38 @@ class _LoginViewState extends State<LoginView> {
                                 padding: const EdgeInsets.all(15.0),
                               ),
                               child: const Text(
-                                'Login',
+                                'Log In',
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 18),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 16.0,
+                            ),
+                            ElevatedButton(
+                              onPressed: () async {
+                                context
+                                    .read<AuthBloc>()
+                                    .add(const AuthEventSignInWithGoogle());
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.red,
+                                minimumSize: const Size(double.infinity, 0),
+                                padding: const EdgeInsets.all(15.0),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Image.asset('assets/google.png'), // Imagen
+                                  const SizedBox(
+                                      width:
+                                          8), // Espacio entre la imagen y el texto
+                                  const Text(
+                                    'Sign In with Google',
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 18),
+                                  ),
+                                ],
                               ),
                             ),
                             TextButton(
@@ -167,7 +196,7 @@ class _LoginViewState extends State<LoginView> {
                                     );
                               },
                               child: const Text(
-                                'Not registered yet? Register here!',
+                                'Not registered yet? Sign Up here!',
                                 style: TextStyle(
                                   color: Colors.grey,
                                 ),

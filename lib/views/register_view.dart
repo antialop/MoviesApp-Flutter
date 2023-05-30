@@ -141,7 +141,7 @@ class _RegisterViewState extends State<RegisterView> {
                               padding: const EdgeInsets.all(15.0),
                             ),
                             child: const Text(
-                              'Register',
+                              'Sign Up',
                               style:
                                   TextStyle(color: Colors.white, fontSize: 18),
                             ),
