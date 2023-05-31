@@ -9,8 +9,7 @@ import 'package:firebase_auth/firebase_auth.dart'
         AuthCredential,
         FirebaseAuth,
         FirebaseAuthException,
-        GoogleAuthProvider,
-        UserCredential;
+        GoogleAuthProvider;
 
 class FirebaseAuthProvider implements AuthProvider {
   @override

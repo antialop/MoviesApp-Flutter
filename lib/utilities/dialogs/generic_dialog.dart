@@ -51,7 +51,6 @@ Future<T?> showGenericDialog<T>({
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
         ),
-        // Personaliza otros atributos según tus necesidades, como backgroundColor, elevation, etc.
       );
     },
   );

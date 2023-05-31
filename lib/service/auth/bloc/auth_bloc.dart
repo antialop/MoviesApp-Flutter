@@ -6,7 +6,6 @@ import 'package:movies/service/auth/bloc/auth_state.dart';
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc(AuthProvider provider)
       : super(const AuthStateUninitialized(isLoading: true)) {
-
     //Evento -> Iniciar el proceso de registro de un nuevo usuario
     on<AuthEventShouldRegister>((event, emit) {
       emit(const AuthStateRegistering(
@@ -166,9 +165,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         }
       },
     );
-  
-  
-   on<AuthEventSignInWithGoogle>((event, emit) async {
+
+    //Evento -> Login con Google
+    on<AuthEventSignInWithGoogle>((event, emit) async {
       emit(const AuthStateLoggedOut(
         exception: null,
         isLoading: true,
