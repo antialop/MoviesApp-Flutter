@@ -11,13 +11,13 @@ class PopularMoviesSlider extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      height: 290,
+      height: 295,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (title != null)
             Padding(
-              padding: const EdgeInsets.only(top: 20,left:20,bottom: 5),
+              padding: const EdgeInsets.only(top: 25,left:20,bottom: 10),
               child: Text(
                 title!,
                 style: const TextStyle(
@@ -30,11 +30,14 @@ class PopularMoviesSlider extends StatelessWidget {
             ),
   
           Expanded(
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: movies.length,
-              itemBuilder: (_, int index) => PopularMovies(movies[index]),
-              //itemBuilder: (_, index) => const PopularMovies(),
+            child: Padding(
+              padding: const EdgeInsets.only(left: 10),
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: movies.length,
+                itemBuilder: (_, int index) => PopularMovies(movies[index]),
+                //itemBuilder: (_, index) => const PopularMovies(),
+              ),
             ),
           ),
         ],
@@ -54,7 +57,8 @@ class PopularMovies extends StatelessWidget {
       width: 130,
       height: 190,
    
-      margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+      //margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 5),
+      margin: const EdgeInsets.only(left: 3),
       child: Column(
         children: [
           GestureDetector(

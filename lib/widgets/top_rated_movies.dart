@@ -32,10 +32,13 @@ class TopRatedMoviesSlider extends StatelessWidget {
             height: 5,
           ),
           Expanded(
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: movies.length,
-              itemBuilder: (_, int index) => TopRatedMovies(movies[index]),
+            child: Padding(
+              padding: const EdgeInsets.only(left: 10),
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: movies.length,
+                itemBuilder: (_, int index) => TopRatedMovies(movies[index]),
+              ),
             ),
           ),
         ],
@@ -54,7 +57,8 @@ class TopRatedMovies extends StatelessWidget {
     return Container(
       width: 130,
       height: 190,
-      margin: const EdgeInsets.symmetric(horizontal: 15),
+      margin: const EdgeInsets.only(left: 3),
+      //margin: const EdgeInsets.symmetric(horizontal: 4),
       child: Column(
         children: [
           GestureDetector(
