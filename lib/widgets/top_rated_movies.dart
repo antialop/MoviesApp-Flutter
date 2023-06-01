@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:movies/models/movie.dart';
 
-class PopularMoviesSlider extends StatelessWidget {
+class TopRatedMoviesSlider extends StatelessWidget {
   final List<Movie> movies;
   final String? title;
 
-  const PopularMoviesSlider({super.key, required this.movies, this.title});
+  const TopRatedMoviesSlider({super.key, required this.movies, this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,7 @@ class PopularMoviesSlider extends StatelessWidget {
         children: [
           if (title != null)
             Padding(
-              padding: const EdgeInsets.only(top: 20,left:20,bottom: 5),
+              padding: const EdgeInsets.only(left:20,bottom: 5),
               child: Text(
                 title!,
                 style: const TextStyle(
@@ -28,13 +28,14 @@ class PopularMoviesSlider extends StatelessWidget {
               
               ),
             ),
-  
+          const SizedBox(
+            height: 5,
+          ),
           Expanded(
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               itemCount: movies.length,
-              itemBuilder: (_, int index) => PopularMovies(movies[index]),
-              //itemBuilder: (_, index) => const PopularMovies(),
+              itemBuilder: (_, int index) => TopRatedMovies(movies[index]),
             ),
           ),
         ],
@@ -43,18 +44,17 @@ class PopularMoviesSlider extends StatelessWidget {
   }
 }
 
-class PopularMovies extends StatelessWidget {
+class TopRatedMovies extends StatelessWidget {
   final Movie movie;
 
-  const PopularMovies(this.movie, {super.key});
+  const TopRatedMovies(this.movie, {super.key});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: 130,
       height: 190,
-   
-      margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+      margin: const EdgeInsets.symmetric(horizontal: 15),
       child: Column(
         children: [
           GestureDetector(

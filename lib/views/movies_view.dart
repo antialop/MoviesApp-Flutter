@@ -25,10 +25,13 @@ class _MoviesViewState extends State<MoviesView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 18, 18, 18),
+      backgroundColor: Colors.black,
       appBar: AppBar(
-        backgroundColor: Colors.red,      
-        title: Text('Movies',style: GoogleFonts.bebasNeue(fontSize: 24),),
+        backgroundColor: Colors.red,
+        title: Padding(
+          padding: const EdgeInsets.only(left: 5),
+          child: Text('Movies', style: GoogleFonts.bebasNeue(fontSize: 24)),
+        ),
         actions: [
           IconButton(
             onPressed: () async {
@@ -44,53 +47,41 @@ class _MoviesViewState extends State<MoviesView> {
           ),
         ],
       ),
-      bottomNavigationBar: Container(
-        decoration: const BoxDecoration(
-          color: Colors.black,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.red,
-              blurRadius: 18.0,
-              spreadRadius: 2.0,
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.only(top: 8.0),
+        child: BottomNavigationBar(
+          backgroundColor: Colors.transparent,
+          currentIndex: currentPageIndex,
+          onTap: (int index) {
+            setState(() {
+              currentPageIndex = index;
+            });
+          },
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Padding(
+                padding: EdgeInsets.all(4.0),
+                child: Icon(Icons.home, color: Colors.red),
+              ),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Padding(
+                padding: EdgeInsets.all(4.0),
+                child: Icon(Icons.search, color: Colors.red),
+              ),
+              label: 'Search',
+            ),
+            BottomNavigationBarItem(
+              icon: Padding(
+                padding: EdgeInsets.all(4.0),
+                child: Icon(Icons.bookmark_border, color: Colors.red),
+              ),
+              label: 'Watchlist',
             ),
           ],
-        ),
-        child: Padding(
-          padding: const EdgeInsets.only(top: 8.0),
-          child: BottomNavigationBar(
-            backgroundColor: Colors.transparent,
-            currentIndex: currentPageIndex,
-            onTap: (int index) {
-              setState(() {
-                currentPageIndex = index;
-              });
-            },
-            items: const <BottomNavigationBarItem>[
-              BottomNavigationBarItem(
-                icon: Padding(
-                  padding: EdgeInsets.all(4.0),
-                  child: Icon(Icons.home, color: Colors.red),
-                ),
-                label: 'Home',
-              ),
-              BottomNavigationBarItem(
-                icon: Padding(
-                  padding: EdgeInsets.all(4.0),
-                  child: Icon(Icons.search, color: Colors.red),
-                ),
-                label: 'Search',
-              ),
-              BottomNavigationBarItem(
-                icon: Padding(
-                  padding: EdgeInsets.all(4.0),
-                  child: Icon(Icons.bookmark_border, color: Colors.red),
-                ),
-                label: 'Watchlist',
-              ),
-            ],
-            selectedItemColor: Colors.red,
-            unselectedItemColor: Colors.white,
-          ),
+          selectedItemColor: Colors.red,
+          unselectedItemColor: Colors.white,
         ),
       ),
       body: IndexedStack(

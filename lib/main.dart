@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:movies/constants/routes.dart';
 import 'package:movies/service/api/movies_provider.dart';
 import 'package:movies/service/auth/bloc/auth_bloc.dart';
@@ -8,18 +7,17 @@ import 'package:movies/service/auth/bloc/auth_events.dart';
 import 'package:movies/service/auth/bloc/auth_state.dart';
 import 'package:movies/service/auth/firebase_auth_provider.dart';
 import 'package:movies/views/details_view.dart';
-import 'package:movies/views/forgot_password_view.dart';
+import 'package:movies/views/auth/forgot_password_view.dart';
 import 'package:movies/views/home_view.dart';
-import 'package:movies/views/login_view.dart';
-import 'package:movies/views/register_view.dart';
-import 'package:movies/views/verify_email_view.dart';
+import 'package:movies/views/auth/login_view.dart';
+import 'package:movies/views/auth/register_view.dart';
+import 'package:movies/views/auth/verify_email_view.dart';
 import 'package:movies/views/movies_view.dart';
 import 'package:provider/provider.dart';
 import 'helpers/loading/loading_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-
   runApp(const AppState());
 }
 
