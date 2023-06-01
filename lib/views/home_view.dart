@@ -1,20 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:movies/service/api/movies_provider.dart';
+import 'package:movies/widgets/popular_movies_slider.dart';
+import 'package:provider/provider.dart';
 
-class HomeView extends StatefulWidget {
+class HomeView extends StatelessWidget {
   const HomeView({super.key});
 
   @override
-  State<HomeView> createState() => _HomeViewState();
-}
-
-class _HomeViewState extends State<HomeView> {
-  @override
   Widget build(BuildContext context) {
-    return const Center(    
-      child: Text(
-        'Esto es la vista de home',
-        style: TextStyle(
-          color: Colors.red,
+    final moviesProvider = Provider.of<MoviesProvider>(context);
+
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            PopularMoviesSlider(
+              movies: moviesProvider.popularMovies,
+              title: 'POPULAR MOVIES',
+            ),
+          ],
         ),
       ),
     );

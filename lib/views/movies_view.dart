@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:movies/service/auth/bloc/auth_bloc.dart';
 import 'package:movies/service/auth/bloc/auth_events.dart';
 import 'package:movies/utilities/dialogs/logout_dialog.dart';
@@ -26,11 +27,8 @@ class _MoviesViewState extends State<MoviesView> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 18, 18, 18),
       appBar: AppBar(
-        backgroundColor: Colors.red,
-        leading: Image.asset(
-          'assets/icon_popcorn.png',
-        ),
-        title: const Text('Movies'),
+        backgroundColor: Colors.red,      
+        title: Text('Movies',style: GoogleFonts.bebasNeue(fontSize: 24),),
         actions: [
           IconButton(
             onPressed: () async {
