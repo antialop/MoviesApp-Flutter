@@ -4,9 +4,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:movies/service/auth/bloc/auth_bloc.dart';
 import 'package:movies/service/auth/bloc/auth_events.dart';
 import 'package:movies/utilities/dialogs/logout_dialog.dart';
-import 'package:movies/views/home_view.dart';
-import 'package:movies/views/search_view.dart';
-import 'package:movies/views/watchlist_view.dart';
+import 'package:movies/views/movies/home_view.dart';
+import 'package:movies/views/movies/search_view.dart';
+import 'package:movies/views/movies/watchlist_view.dart';
 
 class MoviesView extends StatefulWidget {
   const MoviesView({super.key});

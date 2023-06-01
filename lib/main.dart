@@ -6,13 +6,13 @@ import 'package:movies/service/auth/bloc/auth_bloc.dart';
 import 'package:movies/service/auth/bloc/auth_events.dart';
 import 'package:movies/service/auth/bloc/auth_state.dart';
 import 'package:movies/service/auth/firebase_auth_provider.dart';
-import 'package:movies/views/details_view.dart';
 import 'package:movies/views/auth/forgot_password_view.dart';
-import 'package:movies/views/home_view.dart';
 import 'package:movies/views/auth/login_view.dart';
 import 'package:movies/views/auth/register_view.dart';
 import 'package:movies/views/auth/verify_email_view.dart';
-import 'package:movies/views/movies_view.dart';
+import 'package:movies/views/movies/details_view.dart';
+import 'package:movies/views/movies/home_view.dart';
+import 'package:movies/views/movies/movies_view.dart';
 import 'package:provider/provider.dart';
 import 'helpers/loading/loading_screen.dart';
 
