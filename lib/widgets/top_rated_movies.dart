@@ -1,11 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:movies/models/movie.dart';
 
-class TopRatedMoviesSlider extends StatelessWidget {
+class TopRatedMoviesSlider extends StatefulWidget {
   final List<Movie> movies;
   final String? title;
+  final Function onNextPage;
 
-  const TopRatedMoviesSlider({super.key, required this.movies, this.title});
+  const TopRatedMoviesSlider(
+      {super.key, required this.movies, this.title, required this.onNextPage});
+
+  @override
+  State<TopRatedMoviesSlider> createState() => _TopRatedMoviesSliderState();
+}
+
+class _TopRatedMoviesSliderState extends State<TopRatedMoviesSlider> {
+  final ScrollController scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    scrollController.addListener(() {
+      if (scrollController.position.pixels >=
+          scrollController.position.maxScrollExtent - 500) {
+        widget.onNextPage();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,17 +41,16 @@ class TopRatedMoviesSlider extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (title != null)
+          if (widget.title != null)
             Padding(
-              padding: const EdgeInsets.only(left:20,bottom: 5),
+              padding: const EdgeInsets.only(left: 20, bottom: 5),
               child: Text(
-                title!,
+                widget.title!,
                 style: const TextStyle(
                   fontSize: 18,
                   color: Colors.white,
-                  fontWeight: FontWeight.bold,                      
+                  fontWeight: FontWeight.bold,
                 ),
-              
               ),
             ),
           const SizedBox(
@@ -35,9 +60,11 @@ class TopRatedMoviesSlider extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.only(left: 10),
               child: ListView.builder(
+                controller: scrollController,
                 scrollDirection: Axis.horizontal,
-                itemCount: movies.length,
-                itemBuilder: (_, int index) => TopRatedMovies(movies[index]),
+                itemCount: widget.movies.length,
+                itemBuilder: (_, int index) =>
+                    TopRatedMovies(widget.movies[index]),
               ),
             ),
           ),
@@ -81,10 +108,10 @@ class TopRatedMovies extends StatelessWidget {
             maxLines: 3,
             overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.center,
-             style: const TextStyle(
-                  fontSize: 14,
-                  color: Colors.white,                    
-                ),
+            style: const TextStyle(
+              fontSize: 14,
+              color: Colors.white,
+            ),
           ),
         ],
       ),

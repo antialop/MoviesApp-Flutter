@@ -10,26 +10,37 @@ class MoviesProvider extends ChangeNotifier {
 
   List<Movie> popularMovies = [];
   List<Movie> topRatedMovies = [];
+  int _popularPage = 0;
+  int _topRatedPage = 0;
 
   MoviesProvider() {
     getOnPopularMovies();
     getOnTopRatedMovies();
   }
 
-  getOnPopularMovies() async {
-    var url = Uri.https(
-        _url, '3/movie/popular', {'language': _language, 'api_key': _apiKey});
+  Future<String> _getJsonData(String endpoint, [int page = 1]) async {
+    var url = Uri.https(_url, endpoint, {
+      'page': '$page',
+      'language': _language,
+      'api_key': _apiKey,
+    });
     final response = await http.get(url);
-    final moviesResponse = MoviesResponse.fromJson(response.body);
-    popularMovies = moviesResponse.results;
+    return response.body;
+  }
+
+  getOnPopularMovies() async {
+    _popularPage++;
+    final jsonData = await _getJsonData('3/movie/popular', _popularPage);
+    final popularResponse = MoviesResponse.fromJson(jsonData);
+    popularMovies = [...popularMovies, ...popularResponse.results];
     notifyListeners();
   }
-    getOnTopRatedMovies() async {
-    var url = Uri.https(
-        _url, '3/movie/top_rated', {'language': _language, 'api_key': _apiKey});
-    final response = await http.get(url);
-    final moviesResponse = MoviesResponse.fromJson(response.body);
-    topRatedMovies = moviesResponse.results;
+
+  getOnTopRatedMovies() async {
+    _topRatedPage++;
+    final jsonData = await _getJsonData('3/movie/top_rated', _topRatedPage);
+    final topRatedResponse = MoviesResponse.fromJson(jsonData);
+    topRatedMovies = [...topRatedMovies, ...topRatedResponse.results];
     notifyListeners();
   }
 }

@@ -1,11 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:movies/models/movie.dart';
 
-class PopularMoviesSlider extends StatelessWidget {
+class PopularMoviesSlider extends StatefulWidget {
   final List<Movie> movies;
   final String? title;
+  final Function onNextPage;
 
-  const PopularMoviesSlider({super.key, required this.movies, this.title});
+  const PopularMoviesSlider(
+      {super.key, required this.movies, this.title, required this.onNextPage});
+
+  @override
+  State<PopularMoviesSlider> createState() => _PopularMoviesSliderState();
+}
+
+class _PopularMoviesSliderState extends State<PopularMoviesSlider> {
+  final ScrollController scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    scrollController.addListener(() {
+      if (scrollController.position.pixels >=
+          scrollController.position.maxScrollExtent - 500) {
+        widget.onNextPage();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,27 +41,27 @@ class PopularMoviesSlider extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (title != null)
+          if (widget.title != null)
             Padding(
-              padding: const EdgeInsets.only(top: 25,left:20,bottom: 10),
+              padding: const EdgeInsets.only(top: 25, left: 20, bottom: 10),
               child: Text(
-                title!,
+                widget.title!,
                 style: const TextStyle(
                   fontSize: 18,
                   color: Colors.white,
-                  fontWeight: FontWeight.bold,                      
+                  fontWeight: FontWeight.bold,
                 ),
-              
               ),
             ),
-  
           Expanded(
             child: Padding(
               padding: const EdgeInsets.only(left: 10),
               child: ListView.builder(
+                controller: scrollController,
                 scrollDirection: Axis.horizontal,
-                itemCount: movies.length,
-                itemBuilder: (_, int index) => PopularMovies(movies[index]),
+                itemCount: widget.movies.length,
+                itemBuilder: (_, int index) =>
+                    PopularMovies(widget.movies[index]),
                 //itemBuilder: (_, index) => const PopularMovies(),
               ),
             ),
@@ -56,7 +82,7 @@ class PopularMovies extends StatelessWidget {
     return Container(
       width: 130,
       height: 190,
-   
+
       //margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 5),
       margin: const EdgeInsets.only(left: 3),
       child: Column(
@@ -81,10 +107,10 @@ class PopularMovies extends StatelessWidget {
             maxLines: 3,
             overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.center,
-             style: const TextStyle(
-                  fontSize: 14,
-                  color: Colors.white,                    
-                ),
+            style: const TextStyle(
+              fontSize: 14,
+              color: Colors.white,
+            ),
           ),
         ],
       ),

@@ -19,10 +19,12 @@ class HomeView extends StatelessWidget {
             PopularMoviesSlider(
               movies: moviesProvider.popularMovies,
               title: 'POPULAR MOVIES',
+              onNextPage: () => moviesProvider.getOnPopularMovies(),
             ),
              TopRatedMoviesSlider(
               movies: moviesProvider.topRatedMovies,
               title: 'TOP RATED MOVIES',
+                onNextPage: () => moviesProvider.getOnTopRatedMovies(),
             ),
           ],
         ),
