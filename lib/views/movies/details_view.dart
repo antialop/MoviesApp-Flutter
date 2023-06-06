@@ -51,11 +51,15 @@ class _CustomAppBar extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
         ),
-        background: FadeInImage(
-          placeholder: const AssetImage("assets/loading.gif"),
-          image: NetworkImage(movie.fullBackdropPath),
-          fit: BoxFit.cover,
-        ),
+            background: movie.fullBackdropPath != null
+          ? FadeInImage(
+              placeholder: const AssetImage("assets/loading.gif"),
+              image: NetworkImage(movie.fullBackdropPath),
+              fit: BoxFit.cover,
+            )
+          : Container(
+              color: Colors.grey, // Color de respaldo si no hay backdropPath
+            ),
       ),
     );
   }
@@ -79,11 +83,16 @@ class _PosterTitle extends StatelessWidget {
             margin: const EdgeInsets.only(left: 10),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(2),
-              child: FadeInImage(
-                placeholder: const AssetImage('assets/no-image'),
-                image: NetworkImage(movie.fullPoster),
-                height: 150,
-              ),
+              child: movie.fullPoster != null
+              ? FadeInImage(
+                  placeholder: const AssetImage('assets/loading.gif'),
+                  image: NetworkImage(movie.fullPoster),
+                  height: 150,
+                )
+              : Image.asset(
+                  'assets/no-image.jpg',
+                  height: 150,
+                ),
             ),
           ),
           const SizedBox(

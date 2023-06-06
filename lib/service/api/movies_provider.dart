@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:movies/models/movie_response.dart';
 import 'package:movies/models/movie.dart';
+import 'package:movies/models/search_response.dart';
 
 class MoviesProvider extends ChangeNotifier {
   final String _url = 'api.themoviedb.org';
@@ -19,7 +20,7 @@ class MoviesProvider extends ChangeNotifier {
   }
 
   Future<String> _getJsonData(String endpoint, [int page = 1]) async {
-    var url = Uri.https(_url, endpoint, {
+    final url = Uri.https(_url, endpoint, {
       'page': '$page',
       'language': _language,
       'api_key': _apiKey,
@@ -42,5 +43,15 @@ class MoviesProvider extends ChangeNotifier {
     final topRatedResponse = MoviesResponse.fromJson(jsonData);
     topRatedMovies = [...topRatedMovies, ...topRatedResponse.results];
     notifyListeners();
+  }
+
+  Future<List<Movie>> searchMovies(String query) async {
+    final url = Uri.https(_url, '3/search/movie', {      
+      'api_key': _apiKey,
+      'query': query,
+    });
+    final response = await http.get(url);
+    final searchResponse = SearchResponse.fromJson(response.body);
+    return searchResponse.results;
   }
 }
