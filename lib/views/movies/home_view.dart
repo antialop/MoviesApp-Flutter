@@ -11,7 +11,7 @@ class HomeView extends StatelessWidget {
     final moviesProvider = Provider.of<MoviesProvider>(context);
 
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 22, 22, 22),
+      backgroundColor: const Color.fromARGB(255, 22, 22, 22),
       body: SingleChildScrollView(
         child: Column(
           children: [

@@ -38,13 +38,13 @@ class _MoviesSliderState extends State<MoviesSlider> {
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      height: 295,
+      height: 280,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (widget.title != null)
             Padding(
-              padding: const EdgeInsets.only(top: 25, left: 20, bottom: 10),
+              padding: const EdgeInsets.only(top: 15, left: 20, bottom: 10),
               child: Text(
                 widget.title!,
                 style: const TextStyle(
@@ -63,7 +63,6 @@ class _MoviesSliderState extends State<MoviesSlider> {
                 itemCount: widget.movies.length,
                 itemBuilder: (_, int index) =>
                     PopularMovies(widget.movies[index]),
-                //itemBuilder: (_, index) => const PopularMovies(),
               ),
             ),
           ),
@@ -88,8 +87,6 @@ class _PopularMoviesState extends State<PopularMovies> {
     return Container(
       width: 130,
       height: 190,
-
-      //margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 5),
       margin: const EdgeInsets.only(left: 3),
       child: Column(
         children: [

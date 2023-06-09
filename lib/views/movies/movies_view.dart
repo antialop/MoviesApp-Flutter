@@ -42,20 +42,6 @@ class _MoviesViewState extends State<MoviesView> {
                     child: Text('Movies',
                         style: GoogleFonts.bebasNeue(fontSize: 24)),
                   ),
-                  actions: [
-                    IconButton(
-                      onPressed: () async {
-                        final shouldLogout = await showLogOutDialog(context);
-                        if (shouldLogout) {
-                          // ignore: use_build_context_synchronously
-                          context.read<AuthBloc>().add(
-                                const AuthEventLogOut(),
-                              );
-                        }
-                      },
-                      icon: const Icon(Icons.logout),
-                    ),
-                  ],
                 )
               : null,
           bottomNavigationBar: BottomNavigationBar(
