@@ -25,6 +25,11 @@ class HomeView extends StatelessWidget {
               title: 'TOP RATED MOVIES',
               onNextPage: () => moviesProvider.getOnTopRatedMovies(),
             ),
+            MoviesSlider(
+              movies: moviesProvider.upcomingMovies,
+              title: 'UPCOMING MOVIES',
+              onNextPage: () => moviesProvider.getOnUpcomingMovies(),
+            ),
           ],
         ),
       ),

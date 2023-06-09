@@ -11,12 +11,15 @@ class MoviesProvider extends ChangeNotifier {
 
   List<Movie> popularMovies = [];
   List<Movie> topRatedMovies = [];
+  List<Movie> upcomingMovies = [];
   int _popularPage = 0;
   int _topRatedPage = 0;
+  int _upcomingPage = 0;
 
   MoviesProvider() {
     getOnPopularMovies();
     getOnTopRatedMovies();
+    getOnUpcomingMovies();
   }
 
   Future<String> _getJsonData(String endpoint, [int page = 1]) async {
@@ -44,6 +47,14 @@ class MoviesProvider extends ChangeNotifier {
     topRatedMovies = [...topRatedMovies, ...topRatedResponse.results];
     notifyListeners();
   }
+    getOnUpcomingMovies() async {
+    _upcomingPage++;
+    final jsonData = await _getJsonData('3/movie/upcoming', _upcomingPage);
+    final topUpcomingResponse = MoviesResponse.fromJson(jsonData);
+    upcomingMovies = [...upcomingMovies, ...topUpcomingResponse.results];
+    notifyListeners();
+  }
+
 
   Future<List<Movie>> searchMovies(String query) async {
     final url = Uri.https(_url, '3/search/movie', {
