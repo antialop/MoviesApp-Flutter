@@ -3,7 +3,6 @@ import 'dart:convert';
 class Movie {
   bool adult;
   String? backdropPath;
-  List<int> genreIds;
   int id;
   String originalLanguage;
   String originalTitle;
@@ -15,11 +14,13 @@ class Movie {
   bool video;
   double voteAverage;
   int voteCount;
+  bool isFavorite = false;
+
+
 
   Movie({
     required this.adult,
     this.backdropPath,
-    required this.genreIds,
     required this.id,
     required this.originalLanguage,
     required this.originalTitle,
@@ -55,7 +56,6 @@ class Movie {
   factory Movie.fromMap(Map<String, dynamic> json) => Movie(
         adult: json["adult"],
         backdropPath: json["backdrop_path"],
-        genreIds: List<int>.from(json["genre_ids"].map((x) => x)),
         id: json["id"],
         originalLanguage: json["original_language"]!,
         originalTitle: json["original_title"],

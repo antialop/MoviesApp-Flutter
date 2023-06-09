@@ -1,27 +1,99 @@
 import 'package:flutter/material.dart';
 import 'package:movies/models/movie.dart';
+import 'package:movies/service/auth/auth_service.dart';
+import 'package:movies/service/cloud/cloud_favorite.dart';
+import 'package:movies/service/cloud/firebase_cloud_storage.dart';
 
-class MovieDetails extends StatelessWidget {
+class MovieDetails extends StatefulWidget {
   const MovieDetails({super.key});
+
+  @override
+  State<MovieDetails> createState() => _MovieDetailsState();
+}
+
+class _MovieDetailsState extends State<MovieDetails> {
+  late final FirebaseCloudStorage _favoriteService;
+  String get userId => AuthService.firebase().currentUser!.id;
+  Stream<Iterable<CloudFavorite>>? _favoritesStream;
+
+  @override
+  void initState() {
+    _favoriteService = FirebaseCloudStorage();
+    _favoritesStream = _favoriteService.allFavorites(ownerUserId: userId);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     final Movie movie = ModalRoute.of(context)!.settings.arguments as Movie;
+
     return Scaffold(
-        backgroundColor: Color.fromARGB(255, 22, 22, 22),
-        body: CustomScrollView(
-          slivers: [
-            _CustomAppBar(movie),
-            SliverList(
-              delegate: SliverChildListDelegate(
-                [
-                  _PosterTitle(movie),
-                  _Overview(movie),
-                ],
+      backgroundColor: const Color.fromARGB(255, 22, 22, 22),
+      body: Stack(
+        children: [
+          CustomScrollView(
+            slivers: [
+              _CustomAppBar(movie),
+              SliverList(
+                delegate: SliverChildListDelegate(
+                  [
+                    _PosterTitle(movie),
+                    _Overview(movie),
+                  ],
+                ),
               ),
-            ),
-          ],
-        ));
+            ],
+          ),
+          Positioned(
+          top: 220,
+          right: 0,
+          child: StreamBuilder<Iterable<CloudFavorite>>(
+            stream: _favoritesStream,
+            builder: (context, snapshot) {
+              final isFavorite = snapshot.hasData && snapshot.data!.any((fav) => fav.movieId == movie.id);
+              return IconButton(
+                onPressed: () {
+                  addDeleteFavorites(movie);
+                  setState(() {
+                    movie.isFavorite = !isFavorite;
+                  });
+                },
+                icon: favoriteIcon(isFavorite),
+                iconSize: 40,
+              );
+            },
+          ),
+        ),
+        ],
+      ),
+    );
+  }
+
+
+  Widget favoriteIcon(bool isFavorite) {
+    if (isFavorite) {
+      return const Icon(
+        Icons.bookmark,
+        color: Colors.yellow,
+      );
+    }
+    return const Icon(
+      Icons.bookmark,
+      color: Colors.white,
+    );
+  }
+
+  void addDeleteFavorites(Movie movie) async {
+    final favoriteMovie =
+        await _favoriteService.getFavoritesMovies(ownerUserId: userId);
+
+    for (var fav in favoriteMovie) {
+      if (fav.movieId == movie.id) {
+        await _favoriteService.deteleFavorite(documentId: fav.documentId);
+        return;
+      }
+    }
+    await _favoriteService.newFavoriteMovie(ownerUserId: userId, movieId: movie.id);
   }
 }
 
@@ -51,15 +123,15 @@ class _CustomAppBar extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
         ),
-            background: movie.fullBackdropPath != null
-          ? FadeInImage(
-              placeholder: const AssetImage("assets/loading.gif"),
-              image: NetworkImage(movie.fullBackdropPath),
-              fit: BoxFit.cover,
-            )
-          : Container(
-              color: Colors.grey, // Color de respaldo si no hay backdropPath
-            ),
+        background: movie.fullBackdropPath != null
+            ? FadeInImage(
+                placeholder: const AssetImage("assets/loading.gif"),
+                image: NetworkImage(movie.fullBackdropPath),
+                fit: BoxFit.cover,
+              )
+            : Container(
+                color: Colors.grey, // Color de respaldo si no hay backdropPath
+              ),
       ),
     );
   }
@@ -84,15 +156,15 @@ class _PosterTitle extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(2),
               child: movie.fullPoster != null
-              ? FadeInImage(
-                  placeholder: const AssetImage('assets/loading.gif'),
-                  image: NetworkImage(movie.fullPoster),
-                  height: 150,
-                )
-              : Image.asset(
-                  'assets/no-image.jpg',
-                  height: 150,
-                ),
+                  ? FadeInImage(
+                      placeholder: const AssetImage('assets/loading.gif'),
+                      image: NetworkImage(movie.fullPoster),
+                      height: 150,
+                    )
+                  : Image.asset(
+                      'assets/no-image.jpg',
+                      height: 150,
+                    ),
             ),
           ),
           const SizedBox(
@@ -141,18 +213,6 @@ class _PosterTitle extends StatelessWidget {
                           color: Colors.white,
                         ))
                   ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: Row(
-                    children: const [
-                      Icon(
-                        Icons.bookmark,
-                        size: 35,
-                        color: Colors.white,
-                      ),
-                    ],
-                  ),
                 ),
               ],
             ),
