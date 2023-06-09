@@ -5,6 +5,7 @@ import 'package:movies/service/auth/bloc/auth_bloc.dart';
 import 'package:movies/service/auth/bloc/auth_events.dart';
 import 'package:movies/utilities/dialogs/logout_dialog.dart';
 import 'package:movies/views/movies/home_view.dart';
+import 'package:movies/views/movies/profile_view.dart';
 import 'package:movies/views/movies/search_view.dart';
 import 'package:movies/views/movies/watchlist_view.dart';
 
@@ -20,9 +21,10 @@ class _MoviesViewState extends State<MoviesView> {
   final List<Widget> pages = [
     const HomeView(),
     const SearchView(),
-    const WatchlistView()
+    const WatchlistView(),
+    const ProfileView()
   ];
-  final List<bool> showAppBar = [true, false, true];
+  final List<bool> showAppBar = [true, false, true, true];
 
   @override
   Widget build(BuildContext context) {
@@ -56,42 +58,51 @@ class _MoviesViewState extends State<MoviesView> {
                   ],
                 )
               : null,
-          bottomNavigationBar: Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: BottomNavigationBar(
-              backgroundColor: Colors.transparent,
-              currentIndex: currentPageIndex,
-              onTap: (int index) {
-                setState(() {
-                  currentPageIndex = index;
-                });
-              },
-              items: const <BottomNavigationBarItem>[
-                BottomNavigationBarItem(
-                  icon: Padding(
-                    padding: EdgeInsets.all(4.0),
-                    child: Icon(Icons.home, color: Colors.red),
-                  ),
-                  label: 'Home',
+          bottomNavigationBar: BottomNavigationBar(
+            backgroundColor: Colors.transparent,
+            type: BottomNavigationBarType.fixed,
+            currentIndex: currentPageIndex,
+            onTap: (int index) {
+              setState(() {
+                currentPageIndex = index;
+              });
+            },
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                icon: Padding(
+                  padding: EdgeInsets.only(top: 20),
+                  child: Icon(Icons.home),
                 ),
-                BottomNavigationBarItem(
-                  icon: Padding(
-                    padding: EdgeInsets.all(4.0),
-                    child: Icon(Icons.search, color: Colors.red),
-                  ),
-                  label: 'Search',
+                label: '',
+                backgroundColor: Colors.black,
+              ),
+              BottomNavigationBarItem(
+                icon: Padding(
+                  padding: EdgeInsets.only(top: 20),
+                  child: Icon(Icons.search),
                 ),
-                BottomNavigationBarItem(
-                  icon: Padding(
-                    padding: EdgeInsets.all(4.0),
-                    child: Icon(Icons.bookmark_border, color: Colors.red),
-                  ),
-                  label: 'Watchlist',
+                label: '',
+                backgroundColor: Colors.black,
+              ),
+              BottomNavigationBarItem(
+                icon: Padding(
+                  padding: EdgeInsets.only(top: 20),
+                  child: Icon(Icons.bookmark_border),
                 ),
-              ],
-              selectedItemColor: Colors.red,
-              unselectedItemColor: Colors.white,
-            ),
+                label: '',
+                backgroundColor: Colors.black,
+              ),
+              BottomNavigationBarItem(
+                icon: Padding(
+                  padding: EdgeInsets.only(top: 20),
+                  child: Icon(Icons.account_circle),
+                ),
+                label: '',
+                backgroundColor: Colors.black,
+              ),
+            ],
+            selectedItemColor: Colors.red, 
+            unselectedItemColor: Colors.white,
           ),
           body: IndexedStack(
             index: currentPageIndex,
