@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movies/models/movie.dart';
-import 'package:movies/service/auth/auth_service.dart';
-import 'package:movies/service/cloud/cloud_favorite.dart';
-import 'package:movies/service/cloud/firebase_cloud_storage.dart';
+import 'package:movies/widgets/icon_favorite.dart';
 
 class MovieDetails extends StatefulWidget {
   const MovieDetails({super.key});
@@ -12,14 +10,8 @@ class MovieDetails extends StatefulWidget {
 }
 
 class _MovieDetailsState extends State<MovieDetails> {
-  late final FirebaseCloudStorage _favoriteService;
-  String get userId => AuthService.firebase().currentUser!.id;
-  Stream<Iterable<CloudFavorite>>? _favoritesStream;
-
   @override
   void initState() {
-    _favoriteService = FirebaseCloudStorage();
-    _favoritesStream = _favoriteService.allFavorites(ownerUserId: userId);
     super.initState();
   }
 
@@ -45,55 +37,13 @@ class _MovieDetailsState extends State<MovieDetails> {
             ],
           ),
           Positioned(
-          top: 220,
-          right: 0,
-          child: StreamBuilder<Iterable<CloudFavorite>>(
-            stream: _favoritesStream,
-            builder: (context, snapshot) {
-              final isFavorite = snapshot.hasData && snapshot.data!.any((fav) => fav.movieId == movie.id);
-              return IconButton(
-                onPressed: () {
-                  addDeleteFavorites(movie);
-                  setState(() {
-                    movie.isFavorite = !isFavorite;
-                  });
-                },
-                icon: favoriteIcon(isFavorite),
-                iconSize: 40,
-              );
-            },
+            top: 220,
+            right: 0,
+            child: IconFavorite(movie: movie, sizeIcon: 40),
           ),
-        ),
         ],
       ),
     );
-  }
-
-
-  Widget favoriteIcon(bool isFavorite) {
-    if (isFavorite) {
-      return const Icon(
-        Icons.bookmark,
-        color: Colors.yellow,
-      );
-    }
-    return const Icon(
-      Icons.bookmark,
-      color: Colors.white,
-    );
-  }
-
-  void addDeleteFavorites(Movie movie) async {
-    final favoriteMovie =
-        await _favoriteService.getFavoritesMovies(ownerUserId: userId);
-
-    for (var fav in favoriteMovie) {
-      if (fav.movieId == movie.id) {
-        await _favoriteService.deteleFavorite(documentId: fav.documentId);
-        return;
-      }
-    }
-    await _favoriteService.newFavoriteMovie(ownerUserId: userId, movieId: movie.id);
   }
 }
 
@@ -130,7 +80,7 @@ class _CustomAppBar extends StatelessWidget {
                 fit: BoxFit.cover,
               )
             : Container(
-                color: Colors.grey, // Color de respaldo si no hay backdropPath
+                color: Colors.grey,
               ),
       ),
     );

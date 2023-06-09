@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movies/models/movie.dart';
+import 'package:movies/widgets/icon_favorite.dart';
 
 class PopularMoviesSlider extends StatefulWidget {
   final List<Movie> movies;
@@ -72,11 +73,16 @@ class _PopularMoviesSliderState extends State<PopularMoviesSlider> {
   }
 }
 
-class PopularMovies extends StatelessWidget {
+class PopularMovies extends StatefulWidget {
   final Movie movie;
 
   const PopularMovies(this.movie, {super.key});
 
+  @override
+  State<PopularMovies> createState() => _PopularMoviesState();
+}
+
+class _PopularMoviesState extends State<PopularMovies> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -89,21 +95,28 @@ class PopularMovies extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: () => Navigator.pushNamed(context, 'details',
-                arguments: movie),
+                arguments: widget.movie),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(2),
-              child: FadeInImage(
-                placeholder: const AssetImage('assets/no-image.jpg'),
-                image: NetworkImage(movie.fullPoster),
-                width: 120,
-                height: 180,
-                fit: BoxFit.cover,
+              child: Stack(
+                children: [
+                  FadeInImage(
+                    placeholder: const AssetImage('assets/no-image.jpg'),
+                    image: NetworkImage(widget.movie.fullPoster),
+                    width: 120,
+                    height: 180,
+                    fit: BoxFit.cover,
+                  ),
+                  Positioned(
+                    child: IconFavorite(movie: widget.movie),
+                  ),
+                ],
               ),
             ),
           ),
           const SizedBox(height: 5),
           Text(
-            movie.title,
+            widget.movie.title,
             maxLines: 3,
             overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.center,

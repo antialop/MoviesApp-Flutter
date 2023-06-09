@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movies/models/movie.dart';
+import 'package:movies/widgets/icon_favorite.dart';
 
 class TopRatedMoviesSlider extends StatefulWidget {
   final List<Movie> movies;
@@ -89,16 +90,23 @@ class TopRatedMovies extends StatelessWidget {
       child: Column(
         children: [
           GestureDetector(
-            onTap: () => Navigator.pushNamed(context, 'details',
-                arguments: movie),
+            onTap: () =>
+                Navigator.pushNamed(context, 'details', arguments: movie),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(2),
-              child: FadeInImage(
-                placeholder: const AssetImage('assets/no-image.jpg'),
-                image: NetworkImage(movie.fullPoster),
-                width: 120,
-                height: 180,
-                fit: BoxFit.cover,
+              child: Stack(
+                children: [
+                  FadeInImage(
+                    placeholder: const AssetImage('assets/no-image.jpg'),
+                    image: NetworkImage(movie.fullPoster),
+                    width: 120,
+                    height: 180,
+                    fit: BoxFit.cover,
+                  ),
+                  Positioned(
+                    child: IconFavorite(movie: movie),
+                  ),
+                ],
               ),
             ),
           ),

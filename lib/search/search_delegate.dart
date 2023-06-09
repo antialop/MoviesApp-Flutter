@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movies/models/movie.dart';
 import 'package:movies/service/api/movies_provider.dart';
+import 'package:movies/widgets/icon_favorite.dart';
 import 'package:provider/provider.dart';
 
 class MovieSearchDelegate extends SearchDelegate {
@@ -45,7 +46,7 @@ class MovieSearchDelegate extends SearchDelegate {
 
   Widget _emptyContainer() {
     return Container(
-      color:  const Color.fromARGB(255, 22, 22, 22),
+      color: const Color.fromARGB(255, 22, 22, 22),
       child: const Center(
         child: Icon(
           Icons.movie_creation_outlined,
@@ -150,6 +151,7 @@ class _MovieItem extends StatelessWidget {
         movie.originalTitle,
         style: const TextStyle(color: Colors.white),
       ),
+      trailing: IconFavorite(movie: movie),
       onTap: () {
         Navigator.pushNamed(context, "details", arguments: movie);
       },
