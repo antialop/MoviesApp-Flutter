@@ -2,19 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:movies/models/movie.dart';
 import 'package:movies/widgets/icon_favorite.dart';
 
-class PopularMoviesSlider extends StatefulWidget {
+class MoviesSlider extends StatefulWidget {
   final List<Movie> movies;
   final String? title;
   final Function onNextPage;
 
-  const PopularMoviesSlider(
+  const MoviesSlider(
       {super.key, required this.movies, this.title, required this.onNextPage});
 
   @override
-  State<PopularMoviesSlider> createState() => _PopularMoviesSliderState();
+  State<MoviesSlider> createState() => _MoviesSliderState();
 }
 
-class _PopularMoviesSliderState extends State<PopularMoviesSlider> {
+class _MoviesSliderState extends State<MoviesSlider> {
   final ScrollController scrollController = ScrollController();
 
   @override

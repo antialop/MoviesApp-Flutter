@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movies/service/api/movies_provider.dart';
-import 'package:movies/widgets/popular_movies_slider.dart';
-import 'package:movies/widgets/top_rated_movies.dart';
+import 'package:movies/widgets/movies_slider.dart';
 import 'package:provider/provider.dart';
 
 class HomeView extends StatelessWidget {
@@ -16,15 +15,15 @@ class HomeView extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            PopularMoviesSlider(
+            MoviesSlider(
               movies: moviesProvider.popularMovies,
               title: 'POPULAR MOVIES',
               onNextPage: () => moviesProvider.getOnPopularMovies(),
             ),
-             TopRatedMoviesSlider(
+            MoviesSlider(
               movies: moviesProvider.topRatedMovies,
               title: 'TOP RATED MOVIES',
-                onNextPage: () => moviesProvider.getOnTopRatedMovies(),
+              onNextPage: () => moviesProvider.getOnTopRatedMovies(),
             ),
           ],
         ),
