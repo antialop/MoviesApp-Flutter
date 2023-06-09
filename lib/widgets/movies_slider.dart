@@ -108,6 +108,8 @@ class _PopularMoviesState extends State<PopularMovies> {
                     fit: BoxFit.cover,
                   ),
                   Positioned(
+                    bottom: 140,
+                    left: 85,
                     child: IconFavorite(movie: widget.movie),
                   ),
                 ],
