@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:movies/service/auth/bloc/auth_bloc.dart';
-import 'package:movies/service/auth/bloc/auth_events.dart';
-import 'package:movies/utilities/dialogs/logout_dialog.dart';
 import 'package:movies/views/movies/home_view.dart';
 import 'package:movies/views/movies/profile_view.dart';
 import 'package:movies/views/movies/search_view.dart';
