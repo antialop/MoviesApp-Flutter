@@ -30,7 +30,7 @@ class _ProfileViewState extends State<ProfileView> {
             const SizedBox(height: 20),
             const Icon(
               Icons.account_circle,
-              size: 200,
+              size: 150,
               color: Colors.white,
             ),
             const SizedBox(height: 20),
@@ -57,7 +57,7 @@ class _ProfileViewState extends State<ProfileView> {
               style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.red,
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+                      const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
                   textStyle: const TextStyle(
                       fontSize: 20, fontWeight: FontWeight.bold)),
               child: const Text('Logout'),
