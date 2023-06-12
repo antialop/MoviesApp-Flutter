@@ -39,11 +39,6 @@ class _MovieDetailsState extends State<MovieDetails> {
               ),
             ],
           ),
-          Positioned(
-            top: 220,
-            right: 0,
-            child: IconFavorite(movie: movie, sizeIcon: 40),
-          ),
         ],
       ),
     );
@@ -101,9 +96,11 @@ class _PosterTitle extends StatefulWidget {
 
 class _PosterTitleState extends State<_PosterTitle> {
   final MoviesProvider _moviesProvider = MoviesProvider();
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final Movie movie = ModalRoute.of(context)!.settings.arguments as Movie;
 
     return Container(
       margin: const EdgeInsets.only(top: 20),
@@ -176,25 +173,35 @@ class _PosterTitleState extends State<_PosterTitle> {
                 const SizedBox(
                   height: 5,
                 ),
-                ElevatedButton(
-                  onPressed: () async {
-                    final videoKey =
-                        await _moviesProvider.fetchMovieVideos(widget.movie.id);
-                    if (videoKey.isNotEmpty) {
-                      // ignore: use_build_context_synchronously
-                      playTrailer(videoKey, context);
-                    } else {
-                      // ignore: use_build_context_synchronously
-                      showErrorDialog(context, "No trailer available!");
-                    }
-                  },
-                  style: ButtonStyle(
-                    minimumSize: MaterialStateProperty.all(const Size(0, 30)),
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.red),
-                  ),
-                  child: const Text('Watch Trailer'),
+                Row(
+                  children: [
+                    ElevatedButton(
+                      onPressed: () async {
+                        final videoKey =
+                            await _moviesProvider.fetchMovieVideos(widget.movie.id);
+                        if (videoKey.isNotEmpty) {
+                          // ignore: use_build_context_synchronously
+                          playTrailer(videoKey, context);
+                        } else {
+                          // ignore: use_build_context_synchronously
+                          showErrorDialog(context, "No trailer available!");
+                        }
+                      },
+                      style: ButtonStyle(
+                        minimumSize: MaterialStateProperty.all(const Size(0, 30)),
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(Colors.red),
+                      ),
+                      child: const Text('Watch Trailer'),
+                    ),
+                    Positioned(
+                  top: 220,
+                  right: 0,
+                  child: IconFavorite(movie: movie, sizeIcon: 30),
                 ),
+                  ],
+                ),
+                
               ],
             ),
           )

@@ -78,7 +78,7 @@ class _WatchlistViewState extends State<WatchlistView> {
                             fit: BoxFit.scaleDown,
                           ),
                           trailing: IconButton(
-                            icon: const Icon(Icons.delete, color: Colors.red),
+                            icon: const Icon(Icons.delete, color: Colors.white),
                             onPressed: () => _deleteFavorite(favoriteMovies
                                 .reversed
                                 .toList()[index]
