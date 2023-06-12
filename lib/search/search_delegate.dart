@@ -128,7 +128,7 @@ class _MovieItem extends StatelessWidget {
         ),
         subtitle: Text(
           movie.originalTitle,
-          style: const TextStyle(color: Colors.white),
+          style: const TextStyle(color: Colors.white,fontSize: 10),
         ),
         onTap: () {
           Navigator.pushNamed(context, "details", arguments: movie);
@@ -149,7 +149,7 @@ class _MovieItem extends StatelessWidget {
       ),
       subtitle: Text(
         movie.originalTitle,
-        style: const TextStyle(color: Colors.white),
+        style: const TextStyle(color: Colors.white,fontSize: 10),
       ),
       trailing: IconFavorite(movie: movie),
       onTap: () {
