@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:movies/models/movie_response.dart';
@@ -75,5 +77,28 @@ class MoviesProvider extends ChangeNotifier {
     final detailsMovie = Movie.fromJson(response.body);
     return detailsMovie;
    
+  }
+  Future<String> fetchMovieVideos(int movieId) async {
+    final url = Uri.https(
+      _url,'/3/movie/$movieId/videos',{'api_key': _apiKey},
+    );
+
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.body);
+      final videos = json['results'];
+
+      final trailers = videos.where((video) => video['type'] == 'Trailer').toList();
+
+      if (trailers.isNotEmpty) {
+        final videoKey = trailers[0]['key'];
+        return videoKey;
+      } else {
+        return '';
+      }
+    } else {
+      throw Exception('Error en la solicitud HTTP');
+    }
   }
 }

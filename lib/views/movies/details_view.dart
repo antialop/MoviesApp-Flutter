@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:movies/models/movie.dart';
+import 'package:movies/service/api/movies_provider.dart';
+import 'package:movies/utilities/dialogs/error_dialog.dart';
 import 'package:movies/widgets/icon_favorite.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class MovieDetails extends StatefulWidget {
-  const MovieDetails({super.key});
+  const MovieDetails({Key? key}) : super(key: key);
 
   @override
   State<MovieDetails> createState() => _MovieDetailsState();
@@ -87,11 +90,17 @@ class _CustomAppBar extends StatelessWidget {
   }
 }
 
-class _PosterTitle extends StatelessWidget {
+class _PosterTitle extends StatefulWidget {
   final Movie movie;
 
   const _PosterTitle(this.movie);
 
+  @override
+  State<_PosterTitle> createState() => _PosterTitleState();
+}
+
+class _PosterTitleState extends State<_PosterTitle> {
+  final MoviesProvider _moviesProvider = MoviesProvider();
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -105,10 +114,10 @@ class _PosterTitle extends StatelessWidget {
             margin: const EdgeInsets.only(left: 10),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(2),
-              child: movie.fullPoster != null
+              child: widget.movie.fullPoster != null
                   ? FadeInImage(
                       placeholder: const AssetImage('assets/loading.gif'),
-                      image: NetworkImage(movie.fullPoster),
+                      image: NetworkImage(widget.movie.fullPoster),
                       height: 150,
                     )
                   : Image.asset(
@@ -126,7 +135,7 @@ class _PosterTitle extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  movie.title,
+                  widget.movie.title,
                   style: const TextStyle(
                       fontSize: 16,
                       overflow: TextOverflow.ellipsis,
@@ -137,7 +146,7 @@ class _PosterTitle extends StatelessWidget {
                   height: 3,
                 ),
                 Text(
-                  movie.originalTitle,
+                  widget.movie.originalTitle,
                   style: const TextStyle(
                     fontSize: 11,
                     color: Colors.white,
@@ -158,16 +167,56 @@ class _PosterTitle extends StatelessWidget {
                     const SizedBox(
                       width: 5,
                     ),
-                    Text('${movie.voteAverage}',
+                    Text('${widget.movie.voteAverage}',
                         style: const TextStyle(
                           color: Colors.white,
-                        ))
+                        )),
                   ],
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    final videoKey =
+                        await _moviesProvider.fetchMovieVideos(widget.movie.id);
+                    if (videoKey.isNotEmpty) {
+                      // ignore: use_build_context_synchronously
+                      playTrailer(videoKey, context);
+                    } else {
+                      // ignore: use_build_context_synchronously
+                      showErrorDialog(context, "No trailer available!");
+                    }
+                  },
+                  style: ButtonStyle(
+                    minimumSize: MaterialStateProperty.all(const Size(0, 30)),
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.red),
+                  ),
+                  child: const Text('Watch Trailer'),
                 ),
               ],
             ),
           )
         ],
+      ),
+    );
+  }
+
+  void playTrailer(String videoKey, BuildContext context) {
+    final controller = YoutubePlayerController(
+      initialVideoId: videoKey,
+      flags: const YoutubePlayerFlags(
+        autoPlay: true,
+      ),
+    );
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => YoutubePlayer(
+          controller: controller,
+          showVideoProgressIndicator: true,
+        ),
       ),
     );
   }
