@@ -9,17 +9,22 @@ class MovieSearchDelegate extends SearchDelegate {
   ThemeData appBarTheme(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     return theme.copyWith(
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Colors.red,
-        ),
-        textSelectionTheme: const TextSelectionThemeData(
-          cursorColor: Colors.white,
-        ),
-        inputDecorationTheme: const InputDecorationTheme(
-          hintStyle: TextStyle(color: Colors.white),
-          focusedBorder:
-              UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
-        ));
+      appBarTheme: const AppBarTheme(
+        backgroundColor: Colors.red,
+      ),
+      textSelectionTheme: const TextSelectionThemeData(
+        cursorColor: Colors.white,
+      ),
+      inputDecorationTheme: const InputDecorationTheme(
+        hintStyle: TextStyle(color: Colors.white),
+        focusedBorder:
+            UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
+  
+      ),
+      textTheme: Theme.of(context).textTheme.copyWith(
+        headline6: TextStyle(color: Colors.white),
+      ),
+    );
   }
 
   @override
@@ -128,7 +133,7 @@ class _MovieItem extends StatelessWidget {
         ),
         subtitle: Text(
           movie.originalTitle,
-          style: const TextStyle(color: Colors.white,fontSize: 10),
+          style: const TextStyle(color: Colors.white, fontSize: 10),
         ),
         onTap: () {
           Navigator.pushNamed(context, "details", arguments: movie);
@@ -149,7 +154,7 @@ class _MovieItem extends StatelessWidget {
       ),
       subtitle: Text(
         movie.originalTitle,
-        style: const TextStyle(color: Colors.white,fontSize: 10),
+        style: const TextStyle(color: Colors.white, fontSize: 10),
       ),
       trailing: IconFavorite(movie: movie),
       onTap: () {
