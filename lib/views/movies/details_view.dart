@@ -1,8 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:movies/models/credits_response.dart';
 import 'package:movies/models/movie.dart';
 import 'package:movies/service/api/movies_provider.dart';
 import 'package:movies/utilities/dialogs/error_dialog.dart';
 import 'package:movies/widgets/icon_favorite.dart';
+import 'package:provider/provider.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class MovieDetails extends StatefulWidget {
@@ -34,6 +37,7 @@ class _MovieDetailsState extends State<MovieDetails> {
                   [
                     _PosterTitle(movie),
                     _Overview(movie),
+                    CastingCards(movie.id),
                   ],
                 ),
               ),
@@ -52,7 +56,7 @@ class _CustomAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
-      backgroundColor: Colors.indigo,
+      backgroundColor: Colors.black,
       expandedHeight: 200,
       floating: false,
       pinned: true,
@@ -107,20 +111,60 @@ class _PosterTitleState extends State<_PosterTitle> {
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Row(
         children: [
-          Container(
-            margin: const EdgeInsets.only(left: 10),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(2),
-              child: widget.movie.fullPoster != null
-                  ? FadeInImage(
-                      placeholder: const AssetImage('assets/loading.gif'),
-                      image: NetworkImage(widget.movie.fullPoster),
-                      height: 150,
-                    )
-                  : Image.asset(
-                      'assets/no-image.jpg',
-                      height: 150,
+          InkWell(
+            onTap: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return Dialog(
+                    backgroundColor: Colors.black,
+                    child: Stack(
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(2),
+                          child: widget.movie.fullPoster != null
+                              ? FadeInImage(
+                                  placeholder:
+                                      const AssetImage('assets/loading.gif'),
+                                  image: NetworkImage(widget.movie.fullPoster),
+                                  height: 420,
+                                )
+                              : Image.asset(
+                                  'assets/no-image.jpg',
+                                  height: 300,
+                                ),
+                        ),
+                        Positioned(
+                          top: 10,
+                          right: 5,
+                          child: IconButton(
+                            icon: const Icon(Icons.close, color: Colors.white),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ),
+                      ],
                     ),
+                  );
+                },
+              );
+            },
+            child: Container(
+              margin: const EdgeInsets.only(left: 10),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(2),
+                child: widget.movie.fullPoster != null
+                    ? FadeInImage(
+                        placeholder: const AssetImage('assets/loading.gif'),
+                        image: NetworkImage(widget.movie.fullPoster),
+                        height: 150,
+                      )
+                    : Image.asset(
+                        'assets/no-image.jpg',
+                        height: 150,
+                      ),
+              ),
             ),
           ),
           const SizedBox(
@@ -177,8 +221,8 @@ class _PosterTitleState extends State<_PosterTitle> {
                   children: [
                     ElevatedButton(
                       onPressed: () async {
-                        final videoKey =
-                            await _moviesProvider.fetchMovieVideos(widget.movie.id);
+                        final videoKey = await _moviesProvider
+                            .fetchMovieVideos(widget.movie.id);
                         if (videoKey.isNotEmpty) {
                           // ignore: use_build_context_synchronously
                           playTrailer(videoKey, context);
@@ -188,20 +232,16 @@ class _PosterTitleState extends State<_PosterTitle> {
                         }
                       },
                       style: ButtonStyle(
-                        minimumSize: MaterialStateProperty.all(const Size(0, 30)),
+                        minimumSize:
+                            MaterialStateProperty.all(const Size(0, 30)),
                         backgroundColor:
                             MaterialStateProperty.all<Color>(Colors.red),
                       ),
                       child: const Text('Watch Trailer'),
                     ),
-                    Positioned(
-                  top: 220,
-                  right: 0,
-                  child: IconFavorite(movie: movie, sizeIcon: 30),
-                ),
+                    IconFavorite(movie: movie, sizeIcon: 30),
                   ],
                 ),
-                
               ],
             ),
           )
@@ -237,11 +277,118 @@ class _Overview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
       child: Text(
         movie.overview,
         textAlign: TextAlign.justify,
-        style: const TextStyle(fontSize: 20, color: Colors.white),
+        style: const TextStyle(fontSize: 18, color: Colors.white),
+      ),
+    );
+  }
+}
+
+class CastingCards extends StatelessWidget {
+  final int movieId;
+
+  const CastingCards(this.movieId, {Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final moviesProvider = Provider.of<MoviesProvider>(context, listen: false);
+
+    return FutureBuilder(
+      future: moviesProvider.getMovieCast(movieId),
+      builder: (_, AsyncSnapshot<List<Cast>> snapshot) {
+        if (!snapshot.hasData) {
+          return Container(
+            constraints: const BoxConstraints(maxWidth: 100),
+            height: 180,
+            child: const CupertinoActivityIndicator(),
+          );
+        }
+        final List<Cast> cast = snapshot.data!;
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Padding(
+              padding: EdgeInsets.only(left: 30, bottom: 10),
+              child: Text(
+                'CAST',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.only(bottom: 40),
+              width: double.infinity,
+              height: 220,
+              child: ListView.builder(
+                itemCount: cast.length,
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (_, int index) => _CastCard(cast[index]),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _CastCard extends StatelessWidget {
+  final Cast actor;
+
+  const _CastCard(this.actor);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(left: 20),
+      width: 110,
+      height: 100,
+      child: Column(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(5),
+            child: actor.fullProfilePath != null
+                ? FadeInImage(
+                    placeholder: const AssetImage("assets/no-image.jpg"),
+                    image: NetworkImage(actor.fullProfilePath),
+                    height: 140,
+                    width: 100,
+                    fit: BoxFit.cover,
+                  )
+                : Image.asset(
+                    "assets/no-image.jpg",
+                    height: 140,
+                    width: 100,
+                    fit: BoxFit.cover,
+                  ),
+          ),
+          const SizedBox(height: 5),
+          Text(
+            actor.name,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.center,
+            style: const TextStyle(color: Colors.white),
+          ),
+          const SizedBox(height: 2),
+          Text(
+            actor.character!,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 12,
+              color: Colors.white.withOpacity(0.6),
+            ),
+          ),
+        ],
       ),
     );
   }

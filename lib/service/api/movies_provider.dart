@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:movies/models/credits_response.dart';
 import 'package:movies/models/movie_response.dart';
 import 'package:movies/models/movie.dart';
 import 'package:movies/models/search_response.dart';
@@ -14,6 +15,7 @@ class MoviesProvider extends ChangeNotifier {
   List<Movie> popularMovies = [];
   List<Movie> topRatedMovies = [];
   List<Movie> upcomingMovies = [];
+  Map<int, List<Cast>> moviesCast = {};
   int _popularPage = 0;
   int _topRatedPage = 0;
   int _upcomingPage = 0;
@@ -49,14 +51,14 @@ class MoviesProvider extends ChangeNotifier {
     topRatedMovies = [...topRatedMovies, ...topRatedResponse.results];
     notifyListeners();
   }
-    getOnUpcomingMovies() async {
+
+  getOnUpcomingMovies() async {
     _upcomingPage++;
     final jsonData = await _getJsonData('3/movie/upcoming', _upcomingPage);
     final topUpcomingResponse = MoviesResponse.fromJson(jsonData);
     upcomingMovies = [...upcomingMovies, ...topUpcomingResponse.results];
     notifyListeners();
   }
-
 
   Future<List<Movie>> searchMovies(String query) async {
     final url = Uri.https(_url, '3/search/movie', {
@@ -76,11 +78,13 @@ class MoviesProvider extends ChangeNotifier {
     final response = await http.get(url);
     final detailsMovie = Movie.fromJson(response.body);
     return detailsMovie;
-   
   }
+
   Future<String> fetchMovieVideos(int movieId) async {
     final url = Uri.https(
-      _url,'/3/movie/$movieId/videos',{'api_key': _apiKey},
+      _url,
+      '/3/movie/$movieId/videos',
+      {'api_key': _apiKey},
     );
 
     final response = await http.get(url);
@@ -89,7 +93,8 @@ class MoviesProvider extends ChangeNotifier {
       final json = jsonDecode(response.body);
       final videos = json['results'];
 
-      final trailers = videos.where((video) => video['type'] == 'Trailer').toList();
+      final trailers =
+          videos.where((video) => video['type'] == 'Trailer').toList();
 
       if (trailers.isNotEmpty) {
         final videoKey = trailers[0]['key'];
@@ -101,4 +106,16 @@ class MoviesProvider extends ChangeNotifier {
       throw Exception('Error en la solicitud HTTP');
     }
   }
+
+  Future<List<Cast>> getMovieCast(int movieId)async{
+    
+    if(moviesCast.containsKey(movieId))return moviesCast[movieId]!;
+
+    final jsonData = await _getJsonData('3/movie/$movieId/credits');
+    final creditsResponse = CreditsResponse.fromJson(jsonData);
+
+    moviesCast[movieId] = creditsResponse.cast;
+    return creditsResponse.cast;
+  }
+
 }

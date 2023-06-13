@@ -38,7 +38,6 @@ class _WatchlistViewState extends State<WatchlistView> {
           }
 
           List<CloudFavorite> favoriteMovies = snapshot.data?.toList() ?? [];
-
           if (favoriteMovies.isEmpty) {
             return Center(
               child: Column(
