@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:movies/models/actor_response.dart';
 import 'package:movies/models/credits_response.dart';
 import 'package:movies/models/movie_response.dart';
 import 'package:movies/models/movie.dart';
@@ -107,9 +108,8 @@ class MoviesProvider extends ChangeNotifier {
     }
   }
 
-  Future<List<Cast>> getMovieCast(int movieId)async{
-    
-    if(moviesCast.containsKey(movieId))return moviesCast[movieId]!;
+  Future<List<Cast>> getMovieCast(int movieId) async {
+    if (moviesCast.containsKey(movieId)) return moviesCast[movieId]!;
 
     final jsonData = await _getJsonData('3/movie/$movieId/credits');
     final creditsResponse = CreditsResponse.fromJson(jsonData);
@@ -118,4 +118,13 @@ class MoviesProvider extends ChangeNotifier {
     return creditsResponse.cast;
   }
 
+  Future<ActorResponse> getDetailsCast(int actorId) async {
+    final url = Uri.https(_url, '3/person/$actorId', {
+      'language': _language,
+      'api_key': _apiKey,
+    });
+    final response = await http.get(url);
+    final detailsActors = ActorResponse.fromJson(response.body);
+    return detailsActors;
+  }
 }

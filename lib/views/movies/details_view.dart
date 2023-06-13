@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:movies/models/actor_response.dart';
 import 'package:movies/models/credits_response.dart';
 import 'package:movies/models/movie.dart';
 import 'package:movies/service/api/movies_provider.dart';
 import 'package:movies/utilities/dialogs/error_dialog.dart';
+import 'package:movies/views/movies/actor_details_view.dart';
 import 'package:movies/widgets/icon_favorite.dart';
 import 'package:provider/provider.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
@@ -296,7 +298,7 @@ class CastingCards extends StatelessWidget {
   Widget build(BuildContext context) {
     final moviesProvider = Provider.of<MoviesProvider>(context, listen: false);
 
-    return FutureBuilder(
+    return FutureBuilder<List<Cast>>(
       future: moviesProvider.getMovieCast(movieId),
       builder: (_, AsyncSnapshot<List<Cast>> snapshot) {
         if (!snapshot.hasData) {
@@ -322,6 +324,7 @@ class CastingCards extends StatelessWidget {
                 ),
               ),
             ),
+            
             Container(
               margin: const EdgeInsets.only(bottom: 40),
               width: double.infinity,
@@ -329,7 +332,19 @@ class CastingCards extends StatelessWidget {
               child: ListView.builder(
                 itemCount: cast.length,
                 scrollDirection: Axis.horizontal,
-                itemBuilder: (_, int index) => _CastCard(cast[index]),
+                itemBuilder: (_, int index) => GestureDetector(
+                  onTap: () async {
+                    final selectedActorId = cast[index].id;
+                    final actorDetails = await moviesProvider.getDetailsCast(selectedActorId);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ActorDetails(actorDetails),
+                      ),
+                    );
+                  },
+                  child: _CastCard(cast[index]),
+                ),
               ),
             ),
           ],
@@ -338,6 +353,7 @@ class CastingCards extends StatelessWidget {
     );
   }
 }
+
 
 class _CastCard extends StatelessWidget {
   final Cast actor;
