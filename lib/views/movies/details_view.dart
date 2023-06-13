@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:movies/models/actor_response.dart';
 import 'package:movies/models/credits_response.dart';
 import 'package:movies/models/movie.dart';
 import 'package:movies/service/api/movies_provider.dart';
@@ -325,7 +324,7 @@ class CastingCards extends StatelessWidget {
               ),
             ),
             
-            Container(
+          Container(
               margin: const EdgeInsets.only(bottom: 40),
               width: double.infinity,
               height: 220,
