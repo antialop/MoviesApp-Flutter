@@ -39,6 +39,31 @@ class _WatchlistViewState extends State<WatchlistView> {
 
           List<CloudFavorite> favoriteMovies = snapshot.data?.toList() ?? [];
 
+          if (favoriteMovies.isEmpty) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    'assets/movie_time.jpg', 
+                    width: 150, 
+                    height: 150,
+                  ),
+                  const SizedBox(height: 30),
+                  const Text(
+                    'Your Watchlist is empty',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  const SizedBox(height: 10),
+                  const Text(
+                    'Start searching!',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ],
+              ),
+            );
+          }
+
           return ListView.builder(
             itemCount: favoriteMovies.length,
             itemBuilder: (context, index) {
