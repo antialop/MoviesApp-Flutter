@@ -90,6 +90,7 @@ class _WatchlistViewState extends State<WatchlistView> {
                     ),
                     child: Column(
                       children: [
+                        const SizedBox(height: 10),
                         ListTile(
                           title: Text(
                             movie.title,
