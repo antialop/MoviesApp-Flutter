@@ -41,7 +41,7 @@ class Movie {
       'https://i.stack.imgur.com/GNhxO.png';
     }
   }
-    get fullBackdropPath {
+  get fullBackdropPath {
     if (posterPath != null) {
       return 'https://image.tmdb.org/t/p/w500$backdropPath';
     } else {
