@@ -1,6 +1,6 @@
 # Movies App
 
-This project is a Flutter-based mobile application that allows users to browse and explore movies. The app provides features like user registration, login functionality, login with Google, password recovery, email validation, and a user-friendly interface. Users can view movie details, including trailers, enlarge movie posters for better visibility, search for movies by name, add/delete movies to favorites, and log out of their account.
+This project is a Flutter-based mobile application that allows users to browse and explore movies. The app provides features like user registration, login functionality, login with Google, password recovery, and email validation. Users can view movie details, including trailers, enlarge movie posters for better visibility, search for movies by name, add/delete movies to favorites, and log out of their account.
 
 ## App
 
